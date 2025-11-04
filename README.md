@@ -1,30 +1,46 @@
 # bulk_exiff
 
-Utility for fixing EXIF timestamps in bulk. The provided script updates the
-``DateTime``-related EXIF fields of every ``.jpg``/``.jpeg`` file inside a
-directory so that they match the file's modification time.
+Утилита для массовой корректировки временных меток EXIF. Скрипт обновляет
+поля EXIF, связанные с ``DateTime``, у каждого файла ``.jpg``/``.jpeg`` в
+каталоге так, чтобы они соответствовали времени последнего изменения файла.
 
-## Requirements
+## Description
+
+`bulk_exiff` — это небольшая консольная утилита, которая помогает поддерживать
+метаданные вашей фотоколлекции в актуальном состоянии. Когда операционная
+система или инструмент резервного копирования изменяет временные метки файлов,
+не обновляя EXIF, менеджеры фотографий могут показывать неверную дату съемки.
+Запустив этот скрипт, вы синхронизируете значения EXIF-полей ``DateTime``,
+``DateTimeOriginal`` и ``DateTimeDigitized`` у каждого JPEG с текущим временем
+последнего изменения файла, чтобы программы для каталогизации отображали
+корректную хронологию.
+
+Утилита обходит целевой каталог рекурсивно (если не указан параметр
+``--no-recursive``), пропуская файлы, отличные от JPEG, и выводя отчет о каждом
+изменении. В сочетании с опцией ``--dry-run`` можно заранее посмотреть, какие
+файлы будут изменены, не внося никаких правок в метаданные.
+
+## Требования
 
 * Python 3.10+
 * [`piexif`](https://pypi.org/project/piexif/)
 
-Install the dependency with::
+Установите зависимость командой::
 
     pip install piexif
 
-## Usage
+## Использование
 
-Run the script by passing the directory that contains your images or run it
-without arguments and choose the folder from the interactive prompt/dialog:
+Запустите скрипт, передав путь к каталогу с изображениями, либо вызовите его
+без аргументов и выберите папку во всплывающем диалоге:
 
 ```bash
 python bulk_exif_fix.py /path/to/images
-# or
+# или
 python bulk_exif_fix.py
 ```
 
-Optional arguments:
+Дополнительные аргументы:
 
-* ``--no-recursive`` – process only the top-level directory.
-* ``--dry-run`` – show which files would be updated without modifying them.
+* ``--no-recursive`` — обрабатывать только корневой каталог.
+* ``--dry-run`` — показать список файлов, которые будут изменены, без записи в них.
